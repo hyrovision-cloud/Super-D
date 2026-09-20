@@ -17,7 +17,7 @@ export interface ApiError {
 }
 
 class HttpClient {
-  private baseUrl = '/api/v1';
+  private baseUrl = (import.meta.env.VITE_API_BASE_URL as string) || '/api/v1';
 
   private getAuthToken(): string | null {
     return localStorage.getItem('aarogya_access_token');

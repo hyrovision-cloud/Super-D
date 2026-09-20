@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: aarogya-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: aarogya_hospital
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: aarogya-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGODB_URI: mongodb://mongodb:27017/aarogya_hospital
+      JWT_SECRET: ${JWT_SECRET:-aarogya-hospital-secret-key-production-docker}
+      DEMO_MODE: "false"
+      FORCE_SEED: "true"
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+    depends_on:
+      - mongodb
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aarogya-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
+volumes:
+  mongo_data:
