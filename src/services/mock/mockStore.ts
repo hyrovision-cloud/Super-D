@@ -18,6 +18,11 @@ import {
   IncomeRecord,
   Notification,
   AuditLog,
+  SuperDAdvertisement,
+  SuperDTransaction,
+  SuperDLeaveRequest,
+  SuperDGrievance,
+  SuperDPatientDischarge,
 } from '@/types';
 import {
   SEED_BRANCHES,
@@ -40,10 +45,17 @@ import {
   SEED_NOTIFICATIONS,
   SEED_AUDIT_LOGS,
 } from '@/data/seed';
+import {
+  SUPERD_ADVERTISEMENTS,
+  SUPERD_TRANSACTIONS,
+  SUPERD_LEAVE_REQUESTS,
+  SUPERD_GRIEVANCES,
+  SUPERD_PATIENT_DISCHARGES,
+} from '@/data/seed/superDSeed';
 
-const STORAGE_KEY = 'aarogya_demo_store_v1';
+const STORAGE_KEY = 'superd_demo_store_v2';
 
-interface DemoStoreState {
+export interface DemoStoreState {
   branches: Branch[];
   users: User[];
   roles: SystemRole[];
@@ -63,6 +75,12 @@ interface DemoStoreState {
   incomeRecords: IncomeRecord[];
   notifications: Notification[];
   auditLogs: AuditLog[];
+  // Super D official collections
+  superDAds: SuperDAdvertisement[];
+  superDTransactions: SuperDTransaction[];
+  superDLeaveRequests: SuperDLeaveRequest[];
+  superDGrievances: SuperDGrievance[];
+  superDDischarges: SuperDPatientDischarge[];
 }
 
 function getInitialState(): DemoStoreState {
@@ -70,13 +88,12 @@ function getInitialState(): DemoStoreState {
     const serialized = localStorage.getItem(STORAGE_KEY);
     if (serialized) {
       const parsed = JSON.parse(serialized);
-      // Validate that crucial keys exist
-      if (parsed.branches && parsed.patients && parsed.appointments) {
+      if (parsed.branches && parsed.superDAds && parsed.superDTransactions) {
         return parsed;
       }
     }
   } catch (e) {
-    console.warn('Failed to load demo store from localStorage, using seed defaults', e);
+    console.warn('Failed to load Super D demo store from localStorage, using seed defaults', e);
   }
 
   return {
@@ -99,6 +116,12 @@ function getInitialState(): DemoStoreState {
     incomeRecords: [...SEED_INCOME_RECORDS],
     notifications: [...SEED_NOTIFICATIONS],
     auditLogs: [...SEED_AUDIT_LOGS],
+    // Super D domain state
+    superDAds: [...SUPERD_ADVERTISEMENTS],
+    superDTransactions: [...SUPERD_TRANSACTIONS],
+    superDLeaveRequests: [...SUPERD_LEAVE_REQUESTS],
+    superDGrievances: [...SUPERD_GRIEVANCES],
+    superDDischarges: [...SUPERD_PATIENT_DISCHARGES],
   };
 }
 
@@ -118,6 +141,121 @@ class MockStore {
     this.state = updater(this.state);
     this.persist();
     this.notify();
+  }
+
+  // Super D CRUD Actions
+  public addAdvertisement(ad: Omit<SuperDAdvertisement, '_id'>): SuperDAdvertisement {
+    const newAd: SuperDAdvertisement = {
+      ...ad,
+      _id: `ad-${Date.now()}`,
+    };
+    this.setState((prev) => ({
+      ...prev,
+      superDAds: [newAd, ...prev.superDAds],
+    }));
+    return newAd;
+  }
+
+  public updateAdvertisement(id: string, updates: Partial<SuperDAdvertisement>): void {
+    this.setState((prev) => ({
+      ...prev,
+      superDAds: prev.superDAds.map((a) => (a._id === id ? { ...a, ...updates } : a)),
+    }));
+  }
+
+  public deleteAdvertisement(id: string): void {
+    this.setState((prev) => ({
+      ...prev,
+      superDAds: prev.superDAds.filter((a) => a._id !== id),
+    }));
+  }
+
+  public addTransaction(tx: Omit<SuperDTransaction, '_id'>): SuperDTransaction {
+    const newTx: SuperDTransaction = {
+      ...tx,
+      _id: `tx-${Date.now()}`,
+    };
+    this.setState((prev) => ({
+      ...prev,
+      superDTransactions: [newTx, ...prev.superDTransactions],
+    }));
+    return newTx;
+  }
+
+  public updateTransaction(id: string, updates: Partial<SuperDTransaction>): void {
+    this.setState((prev) => ({
+      ...prev,
+      superDTransactions: prev.superDTransactions.map((t) => (t._id === id ? { ...t, ...updates } : t)),
+    }));
+  }
+
+  public deleteTransaction(id: string): void {
+    this.setState((prev) => ({
+      ...prev,
+      superDTransactions: prev.superDTransactions.filter((t) => t._id !== id),
+    }));
+  }
+
+  public addLeaveRequest(req: Omit<SuperDLeaveRequest, '_id'>): SuperDLeaveRequest {
+    const newReq: SuperDLeaveRequest = {
+      ...req,
+      _id: `lr-${Date.now()}`,
+    };
+    this.setState((prev) => ({
+      ...prev,
+      superDLeaveRequests: [newReq, ...prev.superDLeaveRequests],
+    }));
+    return newReq;
+  }
+
+  public updateLeaveReview(
+    id: string,
+    reviewStage: SuperDLeaveRequest['reviewStage'],
+    status: SuperDLeaveRequest['status']
+  ): void {
+    this.setState((prev) => ({
+      ...prev,
+      superDLeaveRequests: prev.superDLeaveRequests.map((l) =>
+        l._id === id ? { ...l, reviewStage, status } : l
+      ),
+    }));
+  }
+
+  public addGrievance(grv: Omit<SuperDGrievance, '_id'>): SuperDGrievance {
+    const newGrv: SuperDGrievance = {
+      ...grv,
+      _id: `grv-${Date.now()}`,
+    };
+    this.setState((prev) => ({
+      ...prev,
+      superDGrievances: [newGrv, ...prev.superDGrievances],
+    }));
+    return newGrv;
+  }
+
+  public updateGrievanceStatus(
+    id: string,
+    status: SuperDGrievance['status'],
+    resolution?: string
+  ): void {
+    this.setState((prev) => ({
+      ...prev,
+      superDGrievances: prev.superDGrievances.map((g) =>
+        g._id === id ? { ...g, status, resolution: resolution ?? g.resolution } : g
+      ),
+    }));
+  }
+
+  public addPatientDischarge(pd: Omit<SuperDPatientDischarge, '_id'>): SuperDPatientDischarge {
+    const newPd: SuperDPatientDischarge = {
+      ...pd,
+      _id: `pd-${Date.now()}`,
+    };
+    this.setState((prev) => ({
+      ...prev,
+      superDDischarges: [newPd, ...prev.superDDischarges],
+    }));
+    return newPd;
   }
 
   public resetToDefaults(): void {
@@ -147,6 +285,11 @@ class MockStore {
       incomeRecords: JSON.parse(JSON.stringify(SEED_INCOME_RECORDS)),
       notifications: JSON.parse(JSON.stringify(SEED_NOTIFICATIONS)),
       auditLogs: JSON.parse(JSON.stringify(SEED_AUDIT_LOGS)),
+      superDAds: JSON.parse(JSON.stringify(SUPERD_ADVERTISEMENTS)),
+      superDTransactions: JSON.parse(JSON.stringify(SUPERD_TRANSACTIONS)),
+      superDLeaveRequests: JSON.parse(JSON.stringify(SUPERD_LEAVE_REQUESTS)),
+      superDGrievances: JSON.parse(JSON.stringify(SUPERD_GRIEVANCES)),
+      superDDischarges: JSON.parse(JSON.stringify(SUPERD_PATIENT_DISCHARGES)),
     };
     this.persist();
     this.notify();

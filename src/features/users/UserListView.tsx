@@ -342,7 +342,7 @@ export const UserListView: React.FC = () => {
               <input
                 type="email"
                 required
-                placeholder="doctor.name@aarogyahospital.demo"
+                placeholder="doctor.name@superd.demo"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 border rounded-lg border-surface-border text-xs focus:ring-2 focus:ring-brand-blue/30 focus:outline-none"

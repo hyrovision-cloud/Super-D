@@ -1,6 +1,16 @@
 // Core Domain & UI Types for Hospital Management Platform
 
+export type SuperDRole =
+  | 'Super Admin'
+  | 'Admin'
+  | 'HR'
+  | 'Branch Doctor'
+  | 'Branch Manager'
+  | 'Staff'
+  | 'Employee';
+
 export type RoleType =
+  | SuperDRole
   | 'Hospital Owner'
   | 'Global Admin'
   | 'Branch Manager'
@@ -435,3 +445,141 @@ export interface PaginatedResponse<T> {
     requestId: string;
   };
 }
+
+// ========================================================
+// SUPER D DOMAIN SPECIFIC INTERFACES
+// ========================================================
+
+export type SuperDAdPlatform = 'Google Ads' | 'Meta Ads' | 'YouTube' | 'Other';
+export type SuperDAdStatus = 'Running' | 'Scheduled' | 'Completed' | 'Draft';
+
+export interface SuperDAdvertisement {
+  _id: string;
+  date: string;
+  branchId: string;
+  branchName: string;
+  category: string;
+  platform: SuperDAdPlatform;
+  title: string;
+  runningAdsBy: string;
+  handledBy: string;
+  leads: number;
+  enquiry: number;
+  spentAmount: number;
+  status: SuperDAdStatus;
+  sourceName: string;
+  url: string;
+  clicks?: number;
+  startDate?: string;
+  endDate?: string;
+}
+
+export type SuperDTransactionType = 'Income' | 'Expense';
+
+export interface SuperDTransaction {
+  _id: string;
+  date: string;
+  branchId: string;
+  branchName: string;
+  type: SuperDTransactionType;
+  category: string;
+  description: string;
+  amount: number;
+  referenceNo: string;
+  addedBy: string;
+  status?: 'ACTIVE' | 'CANCELLED';
+}
+
+export type SuperDReviewStage = 'Submitted' | 'HR Review' | 'Approved' | 'Finalized' | 'Rejected';
+
+export interface SuperDLeaveRequest {
+  _id: string;
+  employeeId: string;
+  employeeName: string;
+  role: string;
+  department: string;
+  branchId: string;
+  branchName: string;
+  applicationDate: string;
+  leaveType: string;
+  fromDate: string;
+  toDate: string;
+  totalDays: number;
+  reason: string;
+  replacementMember: string;
+  attachmentUrl?: string;
+  status: 'Pending' | 'Approved' | 'Rejected';
+  reviewStage: SuperDReviewStage;
+  approvalHistory?: {
+    stage: string;
+    action: string;
+    by: string;
+    timestamp: string;
+    comment?: string;
+  }[];
+}
+
+export type SuperDConcernType =
+  | 'Facilities'
+  | 'Work Environment'
+  | 'HR Policy'
+  | 'Leave & Permission'
+  | 'Administration'
+  | 'Salary & Benefits'
+  | 'Others';
+
+export type SuperDGrievanceStatus = 'Pending' | 'In Review' | 'Resolved' | 'Closed';
+
+export interface SuperDGrievance {
+  _id: string;
+  employeeId: string;
+  employeeName: string;
+  role: string;
+  branchId: string;
+  branchName: string;
+  concernType: SuperDConcernType;
+  subject: string;
+  description: string;
+  date: string;
+  status: SuperDGrievanceStatus;
+  resolution?: string;
+}
+
+export type SuperDPatientStatus = 'Admitted' | 'Discharged';
+
+export interface SuperDPatientDischarge {
+  _id: string;
+  patientId: string;
+  patientName: string;
+  age?: number;
+  branchId: string;
+  branchName: string;
+  entryDate: string;
+  entryTime?: string;
+  exitDate?: string;
+  exitTime?: string;
+  status: SuperDPatientStatus;
+  diagnosis?: string;
+  dischargeSummaryNotes?: string;
+}
+
+export interface BranchComparisonData {
+  branch: string;
+  revenue: number;
+  totalPatients: number;
+  newPatients: number;
+  dressing: number;
+  burningSensation: number;
+  collection: {
+    op: number;
+    medical: number;
+    lab: number;
+    total: number;
+    dressingAmount: number;
+    kit: number;
+    shocks: number;
+    slipper: number;
+    dayCare: number;
+  };
+}
+

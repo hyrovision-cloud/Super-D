@@ -19,14 +19,14 @@ export interface ApiError {
 class HttpClient {
   private baseUrl = ((import.meta as any).env?.VITE_API_BASE_URL as string) || '/api/v1';
 
-  private getAuthToken(): string | null {
-    return localStorage.getItem('aarogya_access_token');
+  private  getAuthToken(): string | null {
+    return localStorage.getItem('superd_access_token');
   }
 
   private getBranchContext(): string | null {
     return (
-      localStorage.getItem('aarogya_selected_branch') ||
-      localStorage.getItem('aarogya_demo_selected_branch')
+      localStorage.getItem('superd_selected_branch') ||
+      localStorage.getItem('superd_demo_selected_branch')
     );
   }
 

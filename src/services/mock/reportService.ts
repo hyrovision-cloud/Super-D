@@ -162,7 +162,7 @@ export const reportService = {
     await new Promise((resolve) => setTimeout(resolve, 800));
     return {
       success: true,
-      filename: `Aarogya_${format}_Export_${Date.now()}.${format.toLowerCase()}`,
+      filename: `SuperD_${format}_Export_${Date.now()}.${format.toLowerCase()}`,
     };
   },
 };

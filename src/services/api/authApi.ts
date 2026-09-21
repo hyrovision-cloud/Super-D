@@ -4,7 +4,7 @@ export const authApi = {
   async login(credentials: { email: string; password?: string }) {
     const res = await httpClient.post('/auth/login', credentials);
     if (res.accessToken) {
-      localStorage.setItem('aarogya_access_token', res.accessToken);
+      localStorage.setItem('superd_access_token', res.accessToken);
     }
     return res;
   },
@@ -13,7 +13,7 @@ export const authApi = {
     try {
       await httpClient.post('/auth/logout');
     } finally {
-      localStorage.removeItem('aarogya_access_token');
+      localStorage.removeItem('superd_access_token');
     }
   },
 
