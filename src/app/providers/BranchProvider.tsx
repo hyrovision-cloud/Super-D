@@ -14,7 +14,7 @@ const BranchContext = createContext<BranchContextType | undefined>(undefined);
 export const BranchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [branches, setBranches] = useState<Branch[]>(mockStore.getState().branches);
   const [selectedBranchId, setSelectedBranchIdState] = useState<string>(() => {
-    return localStorage.getItem('aarogya_demo_selected_branch') || 'all';
+    return localStorage.getItem('superd_demo_selected_branch') || 'all';
   });
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export const BranchProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const setSelectedBranchId = (id: string) => {
     setSelectedBranchIdState(id);
     try {
-      localStorage.setItem('aarogya_demo_selected_branch', id);
+      localStorage.setItem('superd_demo_selected_branch', id);
     } catch {
       // ignore
     }

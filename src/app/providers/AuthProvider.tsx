@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, RoleType, SystemRole } from '@/types';
 import { mockStore } from '@/services/mock/mockStore';
-
 import { authApi } from '@/services/api/authApi';
+import { canRoleAccessRoute } from '@/routes/rolePermissions';
 
 interface AuthContextType {
   currentUser: User;
@@ -22,14 +22,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [roles, setRoles] = useState<SystemRole[]>(mockStore.getState().roles);
 
   const [currentRole, setCurrentRole] = useState<RoleType>(() => {
-    return (localStorage.getItem('aarogya_demo_role') as RoleType) || 'Hospital Owner';
+    return (localStorage.getItem('superd_demo_role') as RoleType) || 'Super Admin';
   });
 
   useEffect(() => {
     const user = users.find((u) => u.role === currentRole) || users[0];
     if (user?.email) {
       authApi.login({ email: user.email, password: '•••' }).catch(() => {
-        // Fallback gracefully if backend is initializing
+        // Fallback gracefully
       });
     }
   }, [currentRole, users]);
@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const switchRole = (role: RoleType) => {
     setCurrentRole(role);
     try {
-      localStorage.setItem('aarogya_demo_role', role);
+      localStorage.setItem('superd_demo_role', role);
     } catch {
       // ignore
     }
@@ -61,77 +61,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return effectiveRole.permissions.includes(permission);
   };
 
-  // Check if current role can access a particular route
   const canAccessRoute = (route: string): boolean => {
-    switch (route) {
-      case '/dashboards/owner':
-        return currentRole === 'Hospital Owner' || currentRole === 'Global Admin' || currentRole === 'Branch Manager';
-      case '/dashboards/admin':
-        return currentRole === 'Global Admin';
-      case '/branches':
-        return currentRole === 'Global Admin' || currentRole === 'Hospital Owner' || currentRole === 'Branch Manager';
-      case '/users':
-      case '/roles':
-        return currentRole === 'Global Admin';
-      case '/patients':
-        return (
-          currentRole === 'Receptionist' ||
-          currentRole === 'Doctor' ||
-          currentRole === 'Branch Manager' ||
-          currentRole === 'Hospital Owner' ||
-          currentRole === 'Global Admin'
-        );
-      case '/appointments':
-        return (
-          currentRole === 'Receptionist' ||
-          currentRole === 'Doctor' ||
-          currentRole === 'Branch Manager' ||
-          currentRole === 'Hospital Owner' ||
-          currentRole === 'Global Admin'
-        );
-      case '/employees':
-        return (
-          currentRole === 'HR Manager' ||
-          currentRole === 'Branch Manager' ||
-          currentRole === 'Hospital Owner' ||
-          currentRole === 'Global Admin'
-        );
-      case '/leave':
-        return (
-          currentRole === 'HR Manager' ||
-          currentRole === 'Branch Manager' ||
-          currentRole === 'Doctor' ||
-          currentRole === 'Hospital Owner' ||
-          currentRole === 'Global Admin'
-        );
-      case '/complaints':
-        return (
-          currentRole === 'Complaints and Query Manager' ||
-          currentRole === 'Branch Manager' ||
-          currentRole === 'Hospital Owner' ||
-          currentRole === 'Global Admin'
-        );
-      case '/marketing':
-        return currentRole === 'Marketing Manager' || currentRole === 'Hospital Owner' || currentRole === 'Global Admin';
-      case '/finance':
-        return currentRole === 'Finance Manager' || currentRole === 'Hospital Owner' || currentRole === 'Global Admin';
-      case '/reports':
-        return (
-          currentRole === 'Hospital Owner' ||
-          currentRole === 'Finance Manager' ||
-          currentRole === 'Global Admin' ||
-          currentRole === 'Branch Manager'
-        );
-      default:
-        return true;
-    }
+    return canRoleAccessRoute(currentRole, route);
   };
 
   const resetDemoData = () => {
     mockStore.resetToDefaults();
-    setCurrentRole('Hospital Owner');
-    localStorage.removeItem('aarogya_demo_role');
-    localStorage.removeItem('aarogya_demo_selected_branch');
+    setCurrentRole('Super Admin');
+    localStorage.removeItem('superd_demo_role');
+    localStorage.removeItem('superd_demo_selected_branch');
     window.location.reload();
   };
 
