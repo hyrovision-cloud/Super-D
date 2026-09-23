@@ -22,7 +22,12 @@ const allowedOrigins = [
 ];
 app.use((0, cors_1.default)({
     origin: (origin, callback) => {
-        if (!origin || allowedOrigins.includes(origin) || !env_1.env.isProduction) {
+        if (!origin || !env_1.env.isProduction) {
+            return callback(null, true);
+        }
+        const normalizedOrigin = origin.replace(/\/+$/, '');
+        const isAllowed = allowedOrigins.some((o) => o.replace(/\/+$/, '') === normalizedOrigin);
+        if (isAllowed) {
             callback(null, true);
         }
         else {

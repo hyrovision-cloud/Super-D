@@ -25,7 +25,12 @@ app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps, curl, or server-to-server)
-      if (!origin || allowedOrigins.includes(origin) || !env.isProduction) {
+      if (!origin || !env.isProduction) {
+        return callback(null, true);
+      }
+      const normalizedOrigin = origin.replace(/\/+$/, '');
+      const isAllowed = allowedOrigins.some((o) => o.replace(/\/+$/, '') === normalizedOrigin);
+      if (isAllowed) {
         callback(null, true);
       } else {
         callback(new Error(`CORS error: Origin ${origin} not permitted.`));

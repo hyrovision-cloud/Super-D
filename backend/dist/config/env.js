@@ -19,7 +19,7 @@ exports.env = {
     MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017/superd_hospital_dev',
     JWT_SECRET: jwtSecret,
     JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || '8h',
-    FRONTEND_URL: process.env.CORS_ORIGIN || process.env.FRONTEND_URL || 'http://localhost:5173',
+    FRONTEND_URL: (process.env.CORS_ORIGIN || process.env.FRONTEND_URL || 'http://localhost:5173').replace(/\/+$/, ''),
     AI_SERVICE_URL: process.env.AI_SERVICE_URL || 'http://localhost:5001',
     isProduction: isProd,
     COOKIE_NAME: process.env.COOKIE_NAME || 'superd_auth_token',
