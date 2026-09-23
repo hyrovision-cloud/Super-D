@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.branchRoutes = void 0;
+const express_1 = require("express");
+const branch_controller_1 = require("../controllers/branch.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const scope_middleware_1 = require("../middleware/scope.middleware");
+const rbac_middleware_1 = require("../middleware/rbac.middleware");
+const router = (0, express_1.Router)();
+router.get('/', auth_middleware_1.authenticate, (0, rbac_middleware_1.requirePermission)('branch.view'), (0, scope_middleware_1.enforceScope)('OWN_BRANCH'), branch_controller_1.branchController.getAllBranches);
+router.get('/comparison', auth_middleware_1.authenticate, (0, rbac_middleware_1.requirePermission)('organization.view'), (0, scope_middleware_1.enforceScope)('ORGANIZATION'), branch_controller_1.branchController.getBranchComparison);
+router.get('/:id', auth_middleware_1.authenticate, (0, rbac_middleware_1.requirePermission)('branch.view'), (0, scope_middleware_1.enforceScope)('OWN_BRANCH'), branch_controller_1.branchController.getBranchById);
+exports.branchRoutes = router;

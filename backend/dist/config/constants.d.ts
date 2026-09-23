@@ -1,0 +1,18 @@
+export declare const BRANCH_IDS: readonly ["branch-trichy", "branch-chennai", "branch-madurai", "branch-pudukkottai"];
+export type BranchId = (typeof BRANCH_IDS)[number];
+export declare const BRANCH_CODES: Record<BranchId, string>;
+export declare const BRANCH_NAMES: Record<BranchId, string>;
+export declare const ROLES: readonly ["Hospital Owner", "Super Admin", "Global Admin", "Branch Manager", "Doctor", "Branch Doctor", "HR", "HR Manager", "Finance Manager", "Marketing Manager", "Complaints and Query Manager", "Staff", "Receptionist", "Employee"];
+export type RoleName = (typeof ROLES)[number];
+export declare const REVENUE_CATEGORIES: readonly ["OP Consultation", "Medical / Pharmacy", "Lab & Diagnostics", "Day Care", "Dressing & Procedures", "Surgical KIT & Consumables", "Other Collections (Inpatient)"];
+export type RevenueCategory = (typeof REVENUE_CATEGORIES)[number];
+export declare const PAYMENT_METHODS: readonly ["Cash", "UPI", "Card", "Net Banking", "TPA Insurance"];
+export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
+export declare const APPOINTMENT_STATUSES: readonly ["SCHEDULED", "CONFIRMED", "IN_PROGRESS", "COMPLETED", "CANCELLED", "NO_SHOW"];
+export type AppointmentStatus = (typeof APPOINTMENT_STATUSES)[number];
+export declare const LEAVE_STATUSES: readonly ["SUBMITTED", "MANAGER_REVIEW", "HR_REVIEW", "APPROVED", "REJECTED", "CANCELLED"];
+export type LeaveStatus = (typeof LEAVE_STATUSES)[number];
+export declare const COMPLAINT_STATUSES: readonly ["NEW", "ASSIGNED", "INVESTIGATING", "ACTION_TAKEN", "RESOLVED", "CLOSED", "ESCALATED"];
+export type ComplaintStatus = (typeof COMPLAINT_STATUSES)[number];
+export declare const PRIORITY_LEVELS: readonly ["LOW", "MEDIUM", "HIGH", "CRITICAL"];
+export type PriorityLevel = (typeof PRIORITY_LEVELS)[number];

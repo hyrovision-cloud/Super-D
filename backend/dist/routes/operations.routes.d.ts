@@ -1,0 +1,12 @@
+export declare const appointmentRoutes: import("express-serve-static-core").Router;
+export declare const employeeRoutes: import("express-serve-static-core").Router;
+export declare const doctorRoutes: import("express-serve-static-core").Router;
+export declare const attendanceRoutes: import("express-serve-static-core").Router;
+export declare const leaveRoutes: import("express-serve-static-core").Router;
+export declare const complaintRoutes: import("express-serve-static-core").Router;
+export declare const revenueRoutes: import("express-serve-static-core").Router;
+export declare const expenseRoutes: import("express-serve-static-core").Router;
+export declare const advertisementRoutes: import("express-serve-static-core").Router;
+export declare const leadRoutes: import("express-serve-static-core").Router;
+export declare const notificationRoutes: import("express-serve-static-core").Router;
+export declare const dashboardRoutes: import("express-serve-static-core").Router;

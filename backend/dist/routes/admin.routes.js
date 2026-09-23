@@ -1,0 +1,16 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.roleRoutes = exports.userRoutes = void 0;
+const express_1 = require("express");
+const admin_controller_1 = require("../controllers/admin.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const rbac_middleware_1 = require("../middleware/rbac.middleware");
+exports.userRoutes = (0, express_1.Router)();
+exports.userRoutes.use(auth_middleware_1.authenticate);
+exports.userRoutes.get('/', (0, rbac_middleware_1.requirePermission)('user.view'), admin_controller_1.adminController.listUsers);
+exports.userRoutes.post('/', (0, rbac_middleware_1.requirePermission)('user.create'), admin_controller_1.adminController.createUser);
+exports.userRoutes.patch('/:id', (0, rbac_middleware_1.requirePermission)('user.update'), admin_controller_1.adminController.updateUser);
+exports.roleRoutes = (0, express_1.Router)();
+exports.roleRoutes.use(auth_middleware_1.authenticate);
+exports.roleRoutes.get('/', (0, rbac_middleware_1.requirePermission)('role.view'), admin_controller_1.adminController.listRoles);
+exports.roleRoutes.patch('/:id', (0, rbac_middleware_1.requirePermission)('role.update'), admin_controller_1.adminController.updateRole);

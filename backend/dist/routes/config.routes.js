@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.configRoutes = void 0;
+const express_1 = require("express");
+const config_controller_1 = require("../controllers/config.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const rbac_middleware_1 = require("../middleware/rbac.middleware");
+exports.configRoutes = (0, express_1.Router)();
+exports.configRoutes.use(auth_middleware_1.authenticate);
+exports.configRoutes.get('/application', (0, rbac_middleware_1.requirePermission)('config.view'), config_controller_1.configController.getApplication);
+exports.configRoutes.patch('/application', (0, rbac_middleware_1.requirePermission)('config.update'), config_controller_1.configController.updateApplication);
