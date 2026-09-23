@@ -23,9 +23,15 @@ import { MobileRecordCard } from '@/components/tables/MobileRecordCard';
 import { TableSkeleton } from '@/components/ui/Skeleton';
 
 const ROLE_OPTIONS: RoleType[] = [
+  'Super Admin',
+  'Admin',
+  'HR',
+  'Branch Doctor',
+  'Branch Manager',
+  'Staff',
+  'Employee',
   'Hospital Owner',
   'Global Admin',
-  'Branch Manager',
   'Doctor',
   'HR Manager',
   'Finance Manager',

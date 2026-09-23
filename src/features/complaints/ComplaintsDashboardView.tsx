@@ -49,6 +49,8 @@ export const ComplaintsDashboardView: React.FC = () => {
   const [resolutionSummary, setResolutionSummary] = useState('');
 
   const canViewConfidential =
+    currentRole === 'Super Admin' ||
+    currentRole === 'Admin' ||
     currentRole === 'Hospital Owner' ||
     currentRole === 'Global Admin' ||
     hasPermission('complaint.view_confidential');
