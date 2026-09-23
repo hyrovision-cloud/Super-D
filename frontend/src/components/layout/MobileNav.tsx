@@ -24,6 +24,7 @@ import {
   Settings,
   Crown,
   Menu,
+  MoreVertical,
   X,
 } from 'lucide-react';
 import { useAuth } from '@/app/providers/AuthProvider';
@@ -127,8 +128,8 @@ export const MobileNav: React.FC<{ isOpen: boolean; onOpenChange: (isOpen: boole
           aria-label="Open navigation menu"
           className="flex flex-col items-center justify-center py-1 px-2.5 text-[10px] font-medium text-slate-500 hover:text-slate-900"
         >
-          <Menu className="w-5 h-5" />
-          <span className="mt-0.5">More</span>
+          <MoreVertical className="w-5 h-5 text-slate-600" />
+          <span className="mt-0.5 font-semibold">More</span>
         </button>
       </div>
 

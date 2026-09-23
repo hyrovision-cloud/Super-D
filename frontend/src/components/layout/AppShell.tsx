@@ -64,19 +64,19 @@ export const AppShell: React.FC = () => {
     : [];
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface-bg">
+    <div className="min-h-screen flex flex-col bg-surface-bg w-full overflow-x-hidden">
       {/* Top Demo Disclaimer Banner */}
       <DemoBanner />
 
-      <div className="flex-1 flex w-full">
+      <div className="flex-1 flex w-full min-w-0 overflow-x-hidden">
         {/* Desktop Sidebar */}
         <DesktopSidebar />
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0">
-          <TopNav onMenuToggle={() => setMobileMenuOpen(true)} onSearchOpen={() => setSearchOpen(true)} />
+        <div className="flex-1 flex flex-col min-w-0 w-full overflow-x-hidden">
+          <TopNav onSearchOpen={() => setSearchOpen(true)} />
 
-          <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto pb-24 md:pb-8">
+          <main className="flex-1 p-3 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto pb-24 md:pb-8 min-w-0 overflow-x-hidden">
             <Outlet />
           </main>
 
