@@ -1,0 +1,42 @@
+{
+  "name": "hospital-management-backend",
+  "version": "1.0.0",
+  "description": "Production Backend API for Multi-Branch Hospital Management & Administration Platform",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "seed:auth": "ts-node-dev --transpile-only src/seed/runSeed.ts",
+    "seed": "ts-node-dev --transpile-only src/seed/runSeed.ts",
+    "seed:verify": "ts-node-dev --transpile-only src/seed/runSeed.ts --verify-only",
+    "test": "ts-node-dev --transpile-only tests/auth.test.ts",
+    "test:health": "ts-node-dev --transpile-only tests/health.test.ts",
+    "test:branch": "ts-node-dev --transpile-only tests/branchDataIntegrity.test.ts"
+    ,"test:rbac": "ts-node-dev --transpile-only tests/rbac.test.ts"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.1",
+    "uuid": "^9.0.1",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "^20.14.2",
+    "@types/uuid": "^9.0.8",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.5"
+  }
+}

@@ -2,33 +2,20 @@
   "name": "hospital-management-platform",
   "private": true,
   "version": "1.0.0",
-  "type": "module",
+  "description": "Multi-Branch Hospital Management & Administration Platform",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.468.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.28.0",
-    "recharts": "^2.15.0",
-    "tailwind-merge": "^2.5.5"
-  },
-  "devDependencies": {
-    "@types/node": "^22.10.1",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5.6.3",
-    "vite": "^6.0.3"
-  },
-  "allowScripts": {
-    "esbuild": true
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:ai": "npm run dev --prefix ai-service",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "npm run build --prefix backend",
+    "build:ai": "npm run build --prefix ai-service",
+    "build": "npm run build:frontend && npm run build:backend && npm run build:ai",
+    "test:backend": "npm run test --prefix backend",
+    "test": "npm run test --prefix backend",
+    "seed:auth": "npm run seed:auth --prefix backend",
+    "seed": "npm run seed --prefix backend",
+    "seed:verify": "npm run seed:verify --prefix backend"
+    ,"test:rbac": "npm run test:rbac --prefix backend"
   }
 }

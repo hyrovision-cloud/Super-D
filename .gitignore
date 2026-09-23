@@ -1,42 +1,34 @@
-# Dependencies
+# Node dependencies
 node_modules/
-*/node_modules/
 **/node_modules/
-
-# Production build outputs
-dist/
-dist-ssr/
-build/
-out/
-*.local
-
-# Environment variables & secrets
-.env
-.env.*
-!.env.example
-
-# Logs
-logs
-*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+
+# Environment configurations & Secrets (Never commit secrets!)
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.local
 
 # Editor & OS files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
 .DS_Store
 Thumbs.db
-.idea/
-.vscode/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
 
-# TypeScript cache
+# TypeScript compilation cache
 *.tsbuildinfo
 
-# Coverage directory used by testing tools
-coverage/
+# Log files
+*.log
+logs/
