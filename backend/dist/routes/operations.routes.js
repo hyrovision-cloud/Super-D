@@ -1,0 +1,42 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.dashboardRoutes = exports.notificationRoutes = exports.leadRoutes = exports.advertisementRoutes = exports.expenseRoutes = exports.revenueRoutes = exports.complaintRoutes = exports.leaveRoutes = exports.attendanceRoutes = exports.doctorRoutes = exports.employeeRoutes = exports.appointmentRoutes = void 0;
+const express_1 = require("express");
+const operations_controller_1 = require("../controllers/operations.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const rbac_middleware_1 = require("../middleware/rbac.middleware");
+const scope_middleware_1 = require("../middleware/scope.middleware");
+function resource(viewPermission, createPermission, updatePermission, handlers, scope = 'OWN_BRANCH') {
+    const r = (0, express_1.Router)();
+    r.use(auth_middleware_1.authenticate);
+    r.get('/', (0, rbac_middleware_1.requirePermission)(viewPermission), (0, scope_middleware_1.enforceScope)(scope), handlers.list);
+    r.post('/', (0, rbac_middleware_1.requirePermission)(createPermission), (0, scope_middleware_1.enforceScope)(scope), handlers.create);
+    if (handlers.update)
+        r.patch('/:id', (0, rbac_middleware_1.requirePermission)(updatePermission), (0, scope_middleware_1.enforceScope)(scope), handlers.update);
+    return r;
+}
+exports.appointmentRoutes = resource('appointment.view', 'appointment.create', 'appointment.update', { list: operations_controller_1.operationsController.appointments, create: operations_controller_1.operationsController.createAppointment, update: operations_controller_1.operationsController.updateAppointment });
+exports.employeeRoutes = resource('employee.view', 'employee.create', 'employee.update', { list: operations_controller_1.operationsController.employees, create: operations_controller_1.operationsController.createEmployee, update: operations_controller_1.operationsController.updateEmployee });
+exports.doctorRoutes = resource('appointment.view', 'employee.create', 'employee.update', { list: (req, res, next) => { req.query.status ||= 'ACTIVE'; req.scopeFilter = { ...(req.scopeFilter || {}), role: 'Doctor' }; return operations_controller_1.operationsController.doctors(req, res, next); }, create: operations_controller_1.operationsController.createEmployee });
+exports.attendanceRoutes = (0, express_1.Router)();
+exports.attendanceRoutes.use(auth_middleware_1.authenticate);
+exports.attendanceRoutes.get('/', (0, rbac_middleware_1.requirePermission)('attendance.view'), (0, scope_middleware_1.enforceScope)('OWN_BRANCH'), operations_controller_1.operationsController.attendance);
+exports.attendanceRoutes.post('/', (0, rbac_middleware_1.requirePermission)('attendance.mark'), (0, scope_middleware_1.enforceScope)('OWN_BRANCH'), operations_controller_1.operationsController.createAttendance);
+exports.attendanceRoutes.patch('/:id', (0, rbac_middleware_1.requirePermission)('attendance.update'), (0, scope_middleware_1.enforceScope)('OWN_BRANCH'), operations_controller_1.operationsController.updateAttendance);
+exports.attendanceRoutes.delete('/:id', (0, rbac_middleware_1.requirePermission)('attendance.delete'), (0, scope_middleware_1.enforceScope)('OWN_BRANCH'), operations_controller_1.operationsController.archiveAttendance);
+exports.leaveRoutes = resource('leave.view', 'leave.request', 'leave.approve', { list: operations_controller_1.operationsController.leave, create: operations_controller_1.operationsController.createLeave, update: operations_controller_1.operationsController.updateLeave }, 'OWN_BRANCH');
+exports.complaintRoutes = resource('complaint.view', 'complaint.create', 'complaint.update', { list: operations_controller_1.operationsController.complaints, create: operations_controller_1.operationsController.createComplaint, update: operations_controller_1.operationsController.updateComplaint });
+exports.revenueRoutes = resource('revenue.view', 'revenue.create', 'revenue.update', { list: operations_controller_1.operationsController.revenue, create: operations_controller_1.operationsController.createRevenue, update: operations_controller_1.operationsController.updateRevenue });
+exports.expenseRoutes = resource('expense.view', 'expense.create', 'expense.update', { list: operations_controller_1.operationsController.expenses, create: operations_controller_1.operationsController.createExpense, update: operations_controller_1.operationsController.updateExpense });
+exports.advertisementRoutes = resource('advertisement.view', 'advertisement.create', 'advertisement.update', { list: operations_controller_1.operationsController.advertisements, create: operations_controller_1.operationsController.createAdvertisement, update: operations_controller_1.operationsController.updateAdvertisement });
+exports.leadRoutes = resource('lead.view', 'lead.create', 'lead.update', { list: operations_controller_1.operationsController.leads, create: operations_controller_1.operationsController.createLead, update: operations_controller_1.operationsController.updateLead });
+exports.notificationRoutes = (0, express_1.Router)();
+exports.notificationRoutes.use(auth_middleware_1.authenticate);
+exports.notificationRoutes.get('/', (0, rbac_middleware_1.requirePermission)('notification.view'), operations_controller_1.operationsController.notifications);
+exports.notificationRoutes.patch('/read-all', (0, rbac_middleware_1.requirePermission)('notification.view'), operations_controller_1.operationsController.markAllNotificationsRead);
+exports.notificationRoutes.patch('/:id/read', (0, rbac_middleware_1.requirePermission)('notification.view'), operations_controller_1.operationsController.markNotificationRead);
+exports.dashboardRoutes = (0, express_1.Router)();
+exports.dashboardRoutes.use(auth_middleware_1.authenticate);
+exports.dashboardRoutes.get('/finance/summary', (0, rbac_middleware_1.requirePermission)('revenue.view'), (0, scope_middleware_1.enforceScope)('OWN_BRANCH'), operations_controller_1.operationsController.financeSummary);
+exports.dashboardRoutes.get('/owner/summary', (0, rbac_middleware_1.requirePermission)('dashboard.owner.view'), (0, scope_middleware_1.enforceScope)('ORGANIZATION'), operations_controller_1.operationsController.ownerSummary);
+exports.dashboardRoutes.get('/owner/branches', (0, rbac_middleware_1.requirePermission)('dashboard.owner.view'), (0, scope_middleware_1.enforceScope)('ORGANIZATION'), operations_controller_1.operationsController.financeSummary);

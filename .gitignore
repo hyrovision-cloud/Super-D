@@ -8,6 +8,8 @@ yarn-error.log*
 # Build outputs
 dist/
 **/dist/
+!backend/dist/
+!backend/dist/**
 build/
 **/build/
 
