@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:api": "npm run dev --prefix apps/api",
     "build": "tsc && vite build",
+    "build:api": "npm run build --prefix apps/api",
+    "seed:api": "npm run seed --prefix apps/api",
     "preview": "vite preview"
   },
   "dependencies": {

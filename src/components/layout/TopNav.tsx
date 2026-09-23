@@ -71,13 +71,23 @@ export const TopNav: React.FC<TopNavProps> = ({ onMenuToggle, onSearchOpen }) =>
           <Menu className="w-5 h-5" />
         </button>
 
-        {/* Current Branch Badge / Indicator */}
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-xs">
-          <Building2 className="w-3.5 h-3.5 text-[#0d6efd]" />
-          <span className="text-slate-500 font-medium">Branch:</span>
-          <span className="font-semibold text-slate-800">
-            {selectedBranch ? selectedBranch.name : 'All Branches (Consolidated)'}
-          </span>
+        {/* Interactive Branch Selector Dropdown */}
+        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 border border-slate-200 text-xs">
+          <Building2 className="w-3.5 h-3.5 text-[#123B5D]" />
+          <span className="text-slate-500 font-medium hidden sm:inline">Branch:</span>
+          <select
+            value={selectedBranchId}
+            onChange={(e) => setSelectedBranchId(e.target.value)}
+            className="bg-transparent font-semibold text-slate-800 focus:outline-none cursor-pointer text-xs"
+            aria-label="Select Hospital Branch"
+          >
+            <option value="all">All Branches (Consolidated)</option>
+            {branches.map((b) => (
+              <option key={b._id} value={b._id}>
+                {b.name} ({b.city})
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

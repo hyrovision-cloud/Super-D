@@ -16,14 +16,17 @@ import {
   TrendingUp,
   FileText,
   Calendar,
+  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '@/app/providers/AuthProvider';
 import { useBranch } from '@/app/providers/BranchProvider';
 import { mockStore } from '@/services/mock/mockStore';
+import { HospitalIntelligenceDrawer } from './HospitalIntelligenceDrawer';
 
 export const RoleDashboardView: React.FC = () => {
   const { currentRole, currentUser } = useAuth();
   const { selectedBranch } = useBranch();
+  const [isIntelligenceOpen, setIsIntelligenceOpen] = React.useState(false);
   const state = mockStore.getState();
 
   // Helper metrics computed from state
@@ -54,9 +57,19 @@ export const RoleDashboardView: React.FC = () => {
                 Manage all branches and monitor hospital operations across Trichy, Chennai, Madurai, and Pudukottai.
               </p>
             </div>
-            <div className="flex items-center gap-2 self-start sm:self-auto bg-white/10 px-4 py-2 rounded-xl backdrop-blur-xs border border-white/15 text-xs font-semibold">
-              <Building2 className="w-4 h-4 text-emerald-300" />
-              <span>Access: All 4 Branches</span>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2.5 self-start sm:self-auto">
+              <button
+                type="button"
+                onClick={() => setIsIntelligenceOpen(true)}
+                className="flex items-center gap-2 bg-white text-[#123B5D] px-4 py-2 rounded-xl shadow-md hover:bg-blue-50 transition-colors text-xs font-bold"
+              >
+                <Sparkles className="w-4 h-4 text-indigo-600" />
+                <span>AI Intelligence</span>
+              </button>
+              <div className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl backdrop-blur-xs border border-white/15 text-xs font-semibold">
+                <Building2 className="w-4 h-4 text-emerald-300" />
+                <span>Access: All 4 Branches</span>
+              </div>
             </div>
           </div>
         </div>
@@ -199,6 +212,11 @@ export const RoleDashboardView: React.FC = () => {
             </Link>
           </div>
         </div>
+
+        <HospitalIntelligenceDrawer
+          isOpen={isIntelligenceOpen}
+          onClose={() => setIsIntelligenceOpen(false)}
+        />
       </div>
     );
   }

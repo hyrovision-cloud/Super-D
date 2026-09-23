@@ -49,10 +49,18 @@ class HttpClient {
       headers['X-Branch-Context'] = branch;
     }
 
-    const response = await fetch(url, {
-      ...options,
-      headers,
-    });
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        ...options,
+        headers,
+      });
+    } catch (err: any) {
+      throw {
+        code: 'NETWORK_ERROR',
+        message: err?.message || 'Unable to connect to backend server.',
+      } as ApiError;
+    }
 
     let json: any = null;
     try {
