@@ -20,15 +20,26 @@ export interface AuthenticatedUser {
   department?: string;
   phone?: string;
   employeeId?: string;
+  token?: string;
 }
 
 export const authApi = {
   async login(credentials: LoginCredentials): Promise<AuthenticatedUser> {
-    return httpClient.post<AuthenticatedUser>('/auth/login', credentials);
+    const res = await httpClient.post<AuthenticatedUser>('/auth/login', credentials);
+    if (res?.token && typeof window !== 'undefined') {
+      localStorage.setItem('superd_auth_token', res.token);
+    }
+    return res;
   },
 
   async logout(): Promise<{ loggedOut: boolean }> {
-    return httpClient.post<{ loggedOut: boolean }>('/auth/logout');
+    try {
+      return await httpClient.post<{ loggedOut: boolean }>('/auth/logout');
+    } finally {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('superd_auth_token');
+      }
+    }
   },
 
   async getMe(): Promise<AuthenticatedUser> {

@@ -38,6 +38,11 @@ class HttpClient {
       headers['X-Branch-Context'] = branch;
     }
 
+    const token = typeof window !== 'undefined' ? localStorage.getItem('superd_auth_token') : null;
+    if (token && !headers['Authorization']) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
     let response: Response;
     try {
       response = await fetch(url, {
@@ -63,6 +68,7 @@ class HttpClient {
     if (!response.ok) {
       // 401 Unauthorized Session Handling: redirect to login if session expired
       if (response.status === 401 && typeof window !== 'undefined') {
+        localStorage.removeItem('superd_auth_token');
         const isLoginView = window.location.pathname.startsWith('/login');
         if (!isLoginView) {
           window.location.href = '/login?expired=true';
